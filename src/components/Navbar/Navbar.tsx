@@ -28,8 +28,26 @@ const Navbar: React.FC = () => {
   const { setTheme } = useTheme();
   const path = usePathname();
 
+  const [backToTopScroll, setBackToTopScroll] = React.useState(false);
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 200) {
+        setBackToTopScroll(true);
+      } else {
+        setBackToTopScroll(false);
+      }
+    });
+  }, []);
+
   return (
-    <header className="w-full h-auto fixed z-10 top-0 left-0 backdrop-blur-sm">
+    <header
+      className={
+        backToTopScroll
+          ? "w-full h-auto fixed z-10 top-0 left-0 backdrop-blur-sm dark:bg-black/50 bg-white/50 border-b"
+          : "w-full h-auto fixed z-10 top-0 left-0 border-b"
+      }
+    >
       <div className="h-auto container max-w-7xl px-20 py-3 flex items-center justify-between">
         <div className="flex items-center gap-5">
           <Link
@@ -147,7 +165,7 @@ const Navbar: React.FC = () => {
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
-                Sign out
+                Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu> */}
