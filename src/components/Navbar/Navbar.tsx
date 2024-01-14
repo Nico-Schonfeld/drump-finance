@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className="w-full h-auto fixed z-10 top-0 left-0 backdrop-blur-sm">
-      <div className="h-auto container max-w-7xl py-3 flex items-center justify-between">
+      <div className="h-auto container max-w-7xl px-20 py-3 flex items-center justify-between">
         <div className="flex items-center gap-5">
           <Link
             href="/"
@@ -112,15 +112,20 @@ const Navbar: React.FC = () => {
 
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-3">
-            <Button variant={"default"} size={"sm"} className="text-white">
-              Sign In
-            </Button>
-            <Button variant={"ghost"} size={"sm"}>
-              Sign Up
-            </Button>
+            <Link href="/auth/login">
+              <Button variant={"default"} size={"sm"} className="text-white">
+                Sign In
+              </Button>
+            </Link>
+
+            <Link href="/auth/register">
+              <Button variant={"ghost"} size={"sm"}>
+                Sign Up
+              </Button>
+            </Link>
           </div>
 
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
                 <AvatarImage
@@ -145,7 +150,7 @@ const Navbar: React.FC = () => {
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -8,7 +8,7 @@ const HomeLanding = () => {
     <main className="relative h-auto">
       <div className="fixed inset-0 h-full w-full bg-[linear-gradient(to_right,#00000010_1px,transparent_1px),linear-gradient(to_bottom,#00000010_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#f0f0f010_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f010_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
 
-      <div className="relative z-[1] h-full container max-w-8xl flex flex-col items-center justify-start pt-20 pb-10">
+      <div className="relative z-[1] h-full container max-w-8xl flex flex-col items-center justify-start px-20 pt-20 pb-10">
         <h1 className="font-bold text-6xl text-center py-40 text-balance mx-32">
           Domina tus <span className="text-green-500">Finanzas</span> con
           decisiones <span className="text-green-500">inteligentes</span>
