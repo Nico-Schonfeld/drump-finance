@@ -9,19 +9,22 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { EyeNoneIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Link from "next/link";
 
 const Auth: React.FC = () => {
   const [viewPassword, setViewPassword] = useState(false);
 
   return (
     <main className="relative h-screen">
-      <div className="h-full container max-w-8xl pt-20 pb-10 px-20 flex items-center">
-        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full border-t border-e-0 border-b border-s">
-          <h3>Logn</h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam,
-            perferendis!
-          </p>
+      <div className="h-full container max-w-8xl py-10 px-20 flex items-center">
+        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full p-10 border-t border-e-0 border-b border-s">
+          <Link
+            href="/"
+            rel="noopener noreferrer"
+            className="text-2xl font-bold"
+          >
+            Drump <span className="text-green-500">Finance</span>
+          </Link>
         </div>
 
         <div className="bg-white dark:bg-black w-full h-full border flex items-center flex-col justify-center gap-10">

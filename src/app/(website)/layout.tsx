@@ -8,7 +8,7 @@ import NavbarServer from "@/components/Navbar/NavbarServer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Drump Finance",
+  title: "Drump Finance | Home",
   description: "",
 };
 
@@ -26,7 +26,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/*    <NavbarServer /> */}
+          <NavbarServer />
           {children}
         </ThemeProvider>
       </body>

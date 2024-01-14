@@ -8,7 +8,7 @@ import NavbarServer from "@/components/Navbar/NavbarServer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Drump Finance",
+  title: "Drump Finance | Pricing",
   description: "",
 };
 
@@ -17,19 +17,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/*    <NavbarServer /> */}
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  return <div>{children}</div>;
 }

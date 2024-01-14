@@ -9,19 +9,28 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { EyeNoneIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Auth: React.FC = () => {
   const [viewPassword, setViewPassword] = useState(false);
 
   return (
     <main className="relative h-screen">
-      <div className="h-full container max-w-8xl pt-20 pb-10 px-20 flex items-center">
-        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full border-t border-e-0 border-b border-s">
-          <h3>Crea una cuenta</h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam,
-            perferendis!
-          </p>
+      <div className="h-full container max-w-8xl py-10 px-20 flex items-center">
+        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full p-10 border-t border-e-0 border-b border-s">
+          <Link
+            href="/"
+            rel="noopener noreferrer"
+            className="text-2xl font-bold"
+          >
+            Drump <span className="text-green-500">Finance</span>
+          </Link>
         </div>
 
         <div className="bg-white dark:bg-black w-full h-full border flex items-center flex-col justify-center gap-10">
@@ -33,9 +42,18 @@ const Auth: React.FC = () => {
           </div>
 
           <div className="w-[60%] flex flex-col items-center justify-center gap-5">
-            <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
-              Google
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
+                    Google
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Register with Google account</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
             <div className="text-gray-400 flex items-center justify-center w-full">
               <Separator className="w-20 mr-5" />{" "}
@@ -57,34 +75,75 @@ const Auth: React.FC = () => {
             </Alert> */}
 
             <div>
-              <Input type="text" id="name" placeholder="johndoe" name="name" />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Input
+                      type="text"
+                      id="name"
+                      placeholder="johndoe"
+                      name="name"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Name</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             <div>
-              <Input
-                type="text"
-                id="username"
-                placeholder="John Doe"
-                name="username"
-              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Input
+                      type="text"
+                      id="username"
+                      placeholder="John Doe"
+                      name="username"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Username</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             <div>
-              <Input
-                type="email"
-                id="email"
-                placeholder="johndoe@example.com"
-                name="email"
-              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder="johndoe@example.com"
+                      name="email"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Email</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             <div className="flex items-center">
-              <Input
-                type={viewPassword ? "text" : "password"}
-                id="pass"
-                placeholder="********"
-                name="password"
-              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Input
+                      type={viewPassword ? "text" : "password"}
+                      id="pass"
+                      placeholder="********"
+                      name="password"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Password</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               {viewPassword ? (
                 <Button
