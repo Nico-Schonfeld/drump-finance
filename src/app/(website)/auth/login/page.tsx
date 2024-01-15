@@ -17,7 +17,7 @@ const Auth: React.FC = () => {
   return (
     <main className="relative h-screen">
       <div className="h-full container max-w-8xl py-10 px-20 flex items-center">
-        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full p-10 border-t border-e-0 border-b border-s">
+        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full p-5 border-t border-e-0 border-b border-s">
           <Link
             href="/"
             rel="noopener noreferrer"
@@ -27,7 +27,7 @@ const Auth: React.FC = () => {
           </Link>
         </div>
 
-        <div className="bg-white dark:bg-black w-full h-full border flex items-center flex-col justify-center gap-10">
+        <div className="bg-white dark:bg-black w-full h-full border flex items-center flex-col justify-center gap-6">
           <div className="flex flex-col gap-5 items-center justify-center text-center">
             <h3 className="font-bold text-4xl">Sign In</h3>
             <p className="text-gray-400">
@@ -35,7 +35,7 @@ const Auth: React.FC = () => {
             </p>
           </div>
 
-          <div className="w-[60%] flex flex-col items-center justify-center gap-5">
+          <div className="w-[60%] flex flex-col items-center justify-center gap-3">
             <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
               Google
             </Button>
@@ -47,18 +47,7 @@ const Auth: React.FC = () => {
             </div>
           </div>
 
-          <form action="" className="w-[60%] flex flex-col gap-5">
-            {/* <Alert
-              className="w-full bg-red-500 dark:bg-red-800 text-white"
-              variant={"destructive"}
-            >
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Facilis, dicta.
-              </AlertDescription>
-            </Alert> */}
-
+          <form action="" className="w-[60%] flex flex-col gap-3">
             <div>
               <Input
                 type="email"
@@ -103,6 +92,10 @@ const Auth: React.FC = () => {
               Sign In with Email
             </Button>
           </form>
+
+          <Link href="/auth/register" className="text-center">
+            Crear cuenta. Sign Up
+          </Link>
         </div>
       </div>
     </main>

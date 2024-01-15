@@ -16,14 +16,35 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { RegisterServer } from "@/app/(website)/auth/register/RegisterServer";
+import { useRouter } from "next/navigation";
 
 const Auth: React.FC = () => {
   const [viewPassword, setViewPassword] = useState(false);
+  const route = useRouter();
+
+  const handleActioClient = async (FormData: FormData) => {
+    const name = FormData.get("name");
+    const username = FormData.get("username");
+    const email = FormData.get("email");
+    const password = FormData.get("password");
+
+    const newUser = {
+      name,
+      username,
+      email,
+      password,
+    };
+
+    RegisterServer(newUser).then((res) => {
+      if (res?.ok) route.push("/");
+    });
+  };
 
   return (
     <main className="relative h-screen">
       <div className="h-full container max-w-8xl py-10 px-20 flex items-center">
-        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full p-10 border-t border-e-0 border-b border-s">
+        <div className="bg-gray-50 dark:bg-[#121010] w-full h-full p-5 border-t border-e-0 border-b border-s">
           <Link
             href="/"
             rel="noopener noreferrer"
@@ -33,7 +54,7 @@ const Auth: React.FC = () => {
           </Link>
         </div>
 
-        <div className="bg-white dark:bg-black w-full h-full border flex items-center flex-col justify-center gap-10">
+        <div className="bg-white dark:bg-black w-full h-full border flex items-center flex-col justify-center gap-6">
           <div className="flex flex-col gap-5 items-center justify-center text-center">
             <h3 className="font-bold text-4xl">Create an account</h3>
             <p className="text-gray-400">
@@ -41,7 +62,7 @@ const Auth: React.FC = () => {
             </p>
           </div>
 
-          <div className="w-[60%] flex flex-col items-center justify-center gap-5">
+          <div className="w-[60%] flex flex-col items-center justify-center gap-3">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -62,18 +83,10 @@ const Auth: React.FC = () => {
             </div>
           </div>
 
-          <form action="" className="w-[60%] flex flex-col gap-5">
-            {/* <Alert
-              className="w-full bg-red-500 dark:bg-red-800 text-white"
-              variant={"destructive"}
-            >
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Facilis, dicta.
-              </AlertDescription>
-            </Alert> */}
-
+          <form
+            action={handleActioClient}
+            className="w-[60%] flex flex-col gap-3"
+          >
             <div>
               <TooltipProvider>
                 <Tooltip>
@@ -171,6 +184,10 @@ const Auth: React.FC = () => {
             <Button type="submit" className="text-white">
               Sign In with Email
             </Button>
+
+            <Link href="/auth/login" className="text-center">
+              ¿Tienes una cuenta? Sign In
+            </Link>
 
             <p className="text-center text-sm text-gray-400 mt-3">
               By clicking continue, you agree to our{" "}
