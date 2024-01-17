@@ -11,17 +11,22 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  username  String?
-  email     String   @unique
-  password  String
-  rol       String?  @default("USER")
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  income    Income[]
-  logs      Logs[]
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  username     String?
+  email        String         @unique
+  password     String
+  rol          String?        @default("USER")
+  avatar       String?
+  premium      String?        @default("FREE")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  logs         Logs[]
+  income       Income[]
+  methods      Methods[]
+  tableNeeds   TableNeeds[]
+  wishesNeeds  WishesNeeds[]
+  savingsNeeds SavingsNeeds[]
 }
 
 model Logs {
@@ -34,10 +39,10 @@ model Logs {
   status      Int
   ok          String
   statusText  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
   authorId    Int
   author      User     @relation(fields: [authorId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Income {
@@ -48,4 +53,51 @@ model Income {
   author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Methods {
+  id            Int      @id @default(autoincrement())
+  fiftyPercent  String
+  thirtyPercent String
+  twentyprecent String
+  authorId      Int
+  author        User     @relation(fields: [authorId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedUp     DateTime @updatedAt
+}
+
+model TableNeeds {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @default(now())
+  title         String
+  amount        String
+  categoryTable String?
+  authorId      Int
+  author        User     @relation(fields: [authorId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model WishesNeeds {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @default(now())
+  title         String
+  amount        String
+  categoryTable String?
+  authorId      Int
+  author        User     @relation(fields: [authorId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SavingsNeeds {
+  id            Int      @id @default(autoincrement())
+  date          DateTime @default(now())
+  title         String
+  amount        String
+  categoryTable String?
+  authorId      Int
+  author        User     @relation(fields: [authorId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
