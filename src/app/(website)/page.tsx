@@ -33,8 +33,14 @@ const HomeLanding = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="font-bold text-6xl text-center py-40 text-balance mx-32"
         >
-          Domina tus <span className="text-green-500">Finanzas</span> con
-          decisiones <span className="text-green-500">inteligentes</span>
+          Domina tus{" "}
+          <span className="inline-flex animate-text-gradient bg-gradient-to-r from-green-500 via-green-600 to-green-400 bg-[200%_auto] bg-clip-text text-transparent">
+            Finanzas
+          </span>{" "}
+          con decisiones{" "}
+          <span className=" animate-text-gradient bg-gradient-to-r from-green-500 via-green-600 to-green-400 bg-[200%_auto] bg-clip-text text-transparent">
+            inteligentes
+          </span>
         </motion.h1>
 
         <motion.section
