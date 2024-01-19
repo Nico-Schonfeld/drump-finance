@@ -20,14 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={sen.className}>
+      <body className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {/*    <NavbarServer /> */}
           {children}
         </ThemeProvider>
       </body>
