@@ -13,6 +13,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
   MoonIcon,
   SunIcon,
   DesktopIcon,
@@ -21,14 +31,49 @@ import {
   ReaderIcon,
 } from "@radix-ui/react-icons";
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Image from "next/image";
+import { EyeNoneIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { RegisterServer } from "@/components/Register/RegisterServer";
 
 const Navbar: React.FC = () => {
   const { setTheme } = useTheme();
   const path = usePathname();
 
   const [backToTopScroll, setBackToTopScroll] = React.useState(false);
+  const [viewPassword, setViewPassword] = React.useState(false);
+  const route = useRouter();
+
+  const handleActioClient = async (FormData: FormData) => {
+    const name = FormData.get("name");
+    const username = FormData.get("username");
+    const email = FormData.get("email");
+    const password = FormData.get("password");
+
+    const newUser = {
+      name,
+      username,
+      email,
+      password,
+    };
+
+    RegisterServer(newUser).then((res) => {
+      if (res?.ok) route.push("/");
+    });
+  };
 
   const scrollUp = () => {
     window.scrollTo({
@@ -52,7 +97,12 @@ const Navbar: React.FC = () => {
   }, []);
 
   const renderHeader = () => {
-    if (path === "/auth/login" || path === "/auth/register") return null;
+    if (
+      path === "/auth/login" ||
+      path === "/auth/register" ||
+      path === "/dashboard"
+    )
+      return null;
 
     return (
       <header
@@ -143,50 +193,284 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-5">
-            <div className="flex items-center gap-3">
-              <Link href="/auth/login">
-                <Button variant={"default"} size={"sm"} className="text-white">
-                  Sign In
-                </Button>
-              </Link>
+            {/* <div className="flex items-center gap-3">
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button
+                    variant={"default"}
+                    size={"sm"}
+                    className="text-white"
+                  >
+                    Sign In
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <div className="mx-auto w-full max-w-sm">
+                    <DrawerHeader>
+                      <DrawerTitle className="text-3xl text-center">
+                        Sign In
+                      </DrawerTitle>
+                      <DrawerDescription className="text-center">
+                        Enter your email below to create your <br /> account
+                      </DrawerDescription>
+                    </DrawerHeader>
 
-              <Link href="/auth/register">
-                <Button variant={"ghost"} size={"sm"}>
-                  Sign Up
-                </Button>
-              </Link>
-            </div>
+                    <DrawerFooter>
+                      <div className="w-full flex flex-col items-center justify-center gap-5">
+                        <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
+                          Google
+                        </Button>
 
-            {/* <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-                <AvatarFallback>John Doe</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-52">
-              <DropdownMenuLabel>
-                <div className="flex flex-col text-[12px]">
-                  <span className="font-bold">John Doe</span>
-                  <span className="text-gray-400">johndoe@gmail.com</span>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
+                        <div className="text-gray-400 flex items-center justify-center w-full">
+                          <Separator className="w-20 mr-5" />{" "}
+                          <span className="text-sm ">Or continue with</span>{" "}
+                          <Separator className="w-20 ml-5" />
+                        </div>
+                      </div>
+
+                      <form
+                        action=""
+                        className="w-full flex flex-col gap-5 pb-20 pt-10"
+                      >
+                        <div>
+                          <Input
+                            type="email"
+                            id="email"
+                            placeholder="johndoe@example.com"
+                            name="email"
+                          />
+                        </div>
+
+                        <div className="flex items-center">
+                          <Input
+                            type={viewPassword ? "text" : "password"}
+                            id="pass"
+                            placeholder="********"
+                            name="password"
+                          />
+
+                          {viewPassword ? (
+                            <Button
+                              type="button"
+                              size={"icon"}
+                              variant={"outline"}
+                              className="ml-3 w-12"
+                              onClick={() => setViewPassword(!viewPassword)}
+                            >
+                              <EyeNoneIcon />
+                            </Button>
+                          ) : (
+                            <Button
+                              type="button"
+                              size={"icon"}
+                              variant={"outline"}
+                              className="ml-3 w-12"
+                              onClick={() => setViewPassword(!viewPassword)}
+                            >
+                              <EyeOpenIcon />
+                            </Button>
+                          )}
+                        </div>
+
+                        <Button type="submit" className="text-white">
+                          Sign In with Email
+                        </Button>
+
+                        <DrawerClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </DrawerClose>
+                      </form>
+                    </DrawerFooter>
+                  </div>
+                </DrawerContent>
+              </Drawer>
+
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    size={"sm"}
+                    className="text-black dark:text-white"
+                  >
+                    Sign up
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <div className="mx-auto w-full max-w-sm">
+                    <DrawerHeader>
+                      <DrawerTitle className="text-3xl text-center">
+                        Create an account
+                      </DrawerTitle>
+                      <DrawerDescription className="text-center">
+                        Enter your email below to create your <br /> account
+                      </DrawerDescription>
+                    </DrawerHeader>
+
+                    <DrawerFooter>
+                      <div className="w-full flex flex-col items-center justify-center gap-5">
+                        <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
+                          Google
+                        </Button>
+
+                        <div className="text-gray-400 flex items-center justify-center w-full">
+                          <Separator className="w-20 mr-5" />{" "}
+                          <span className="text-sm ">Or continue with</span>{" "}
+                          <Separator className="w-20 ml-5" />
+                        </div>
+                      </div>
+
+                      <form
+                        action={handleActioClient}
+                        className="w-full flex flex-col gap-5 pb-20 pt-10"
+                      >
+                        <div>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Input
+                                  type="text"
+                                  id="name"
+                                  placeholder="johndoe"
+                                  name="name"
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Name</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+
+                        <div>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Input
+                                  type="text"
+                                  id="username"
+                                  placeholder="John Doe"
+                                  name="username"
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Username</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+
+                        <div>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Input
+                                  type="email"
+                                  id="email"
+                                  placeholder="johndoe@example.com"
+                                  name="email"
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Email</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+
+                        <div className="flex items-center">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Input
+                                  type={viewPassword ? "text" : "password"}
+                                  id="pass"
+                                  placeholder="********"
+                                  name="password"
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Password</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+
+                          {viewPassword ? (
+                            <Button
+                              type="button"
+                              size={"icon"}
+                              variant={"outline"}
+                              className="ml-3 w-12"
+                              onClick={() => setViewPassword(!viewPassword)}
+                            >
+                              <EyeNoneIcon />
+                            </Button>
+                          ) : (
+                            <Button
+                              type="button"
+                              size={"icon"}
+                              variant={"outline"}
+                              className="ml-3 w-12"
+                              onClick={() => setViewPassword(!viewPassword)}
+                            >
+                              <EyeOpenIcon />
+                            </Button>
+                          )}
+                        </div>
+
+                        <Button type="submit" className="text-white">
+                          Sign In with Email
+                        </Button>
+
+                        <DrawerClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </DrawerClose>
+
+                        <p className="text-center text-sm text-gray-400 mt-3">
+                          By clicking continue, you agree to our{" "}
+                          <span>Terms of Service</span> and{" "}
+                          <span>Privacy Policy</span>.
+                        </p>
+                      </form>
+                    </DrawerFooter>
+                  </div>
+                </DrawerContent>
+              </Drawer>
+            </div> */}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>John Doe</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-52">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col text-[12px]">
+                    <span className="font-bold">John Doe</span>
+                    <span className="text-gray-400">johndoe@gmail.com</span>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer">
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-transparent hover:bg-transparent border-transparent"
+                >
                   <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                   <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                   <span className="sr-only">Toggle theme</span>

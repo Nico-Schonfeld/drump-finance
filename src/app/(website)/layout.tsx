@@ -8,7 +8,7 @@ import NavbarServer from "@/components/Navbar/NavbarServer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Drump Finance | Home",
+  title: "Drump Finance",
   description: "",
 };
 
