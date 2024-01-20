@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import db from "@/lib/db/prisma";
 import { getServerSession } from "next-auth/next"; // server component
 // import {useSession} from 'next-auth/react' client component
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/NextAuth";
 
 const NavbarServer: React.FC = async () => {
   /* DATABASE_URL="file:./dev.db"
