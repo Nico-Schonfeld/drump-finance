@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
         if (!mathPassword) throw new Error("Wrong password");
 
         return {
-          id: userFound.id,
+          id: userFound.id.toString(),
           email: userFound?.email,
           name: userFound.name,
           image: userFound.avatar,
