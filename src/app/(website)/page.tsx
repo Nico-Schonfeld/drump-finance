@@ -31,7 +31,7 @@ const HomeLanding = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="font-bold text-6xl text-center py-40 text-balance mx-32"
+          className="font-bold text-4xl lg:text-6xl text-center py-40 text-balance"
         >
           Domina tus{" "}
           <span className="inline-flex animate-text-gradient bg-gradient-to-r from-green-700 via-green-300 to-green-700 bg-[200%_auto] bg-clip-text text-transparent">

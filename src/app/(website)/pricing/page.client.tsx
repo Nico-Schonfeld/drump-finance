@@ -72,9 +72,9 @@ const PricingClient: React.FC = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
-          className="flex items-start justify-center gap-10"
+          className="flex items-center justify-center flex-col lg:flex-row gap-10"
         >
-          <Card className="p-5 relative flex flex-col items-center h-[55rem] hover:shadow-xl transition-all">
+          <Card className="p-5 relative flex flex-col items-center w-80 h-auto hover:shadow-xl transition-all">
             <CardHeader className="flex flex-col gap-5 mt-14">
               <CardTitle className="text-2xl">FREE</CardTitle>
               <CardDescription>
@@ -130,7 +130,7 @@ const PricingClient: React.FC = () => {
             </CardFooter>
           </Card>
 
-          <Card className="p-5 border-green-500 border relative flex flex-col items-center h-[55rem] hover:shadow-xl transition-all">
+          <Card className="p-5 border-green-500 border relative flex flex-col items-center  w-80 h-auto hover:shadow-xl transition-all">
             <span className="absolute top-0 rounded-b-lg px-10 py-1 inline-flex animate-background-shine items-center justify-center bg-[linear-gradient(110deg,#22c55e,45%,#86EFAC,55%,#22c55e)] bg-[length:200%_100%] text-white transition-colors text-sm">
               Most Popular
             </span>
@@ -191,7 +191,7 @@ const PricingClient: React.FC = () => {
             </CardFooter>
           </Card>
 
-          <Card className="p-5 relative flex flex-col items-center h-[55rem] hover:shadow-xl transition-all">
+          <Card className="p-5 relative flex flex-col items-center w-80 h-auto hover:shadow-xl transition-all">
             <CardHeader className="flex flex-col gap-5 mt-14">
               <CardTitle className="text-2xl">ENTERPRISE</CardTitle>
               <CardDescription>

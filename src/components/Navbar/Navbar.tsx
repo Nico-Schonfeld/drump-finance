@@ -13,6 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -29,6 +37,7 @@ import {
   DashboardIcon,
   LightningBoltIcon,
   ReaderIcon,
+  HamburgerMenuIcon,
 } from "@radix-ui/react-icons";
 
 import { Input } from "@/components/ui/input";
@@ -112,17 +121,23 @@ const Navbar: React.FC = () => {
             : "w-full h-auto fixed z-10 top-0 left-0 border-b"
         }
       >
-        <div className="h-auto container max-w-7xl px-20 py-3 flex items-center justify-between">
+        <div className="h-auto container max-w-7xl px-10 lg:px-20 py-3 flex items-center justify-between">
           <div className="flex items-center gap-5">
             <Link
               href="/"
               rel="noopener noreferrer"
-              className="text-xl font-bold"
+              className="text-2xl font-bold"
             >
-              Drump <span className="text-green-500">Finance.</span>
+              <span className="hidden lg:flex items-center gap-2">
+                Drump <span className="text-green-500">Finance.</span>
+              </span>
+
+              <span className="flex item-center lg:hidden gap-0">
+                D <span className="text-green-500">F.</span>
+              </span>
             </Link>
 
-            <ul className="flex items-center gap-5">
+            <ul className="hidden lg:flex items-center gap-5 ">
               <li>
                 <Link
                   className={
@@ -192,8 +207,29 @@ const Navbar: React.FC = () => {
             </ul>
           </div>
 
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-5">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  className="flex lg:hidden"
+                >
+                  <HamburgerMenuIcon />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Are you absolutely sure?</SheetTitle>
+                  <SheetDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+
+            <div className="hidden lg:flex items-center gap-3">
               <Drawer>
                 <DrawerTrigger asChild>
                   <Button
@@ -437,34 +473,36 @@ const Navbar: React.FC = () => {
               </Drawer>
             </div>
 
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>John Doe</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-52">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col text-[12px]">
-                    <span className="font-bold">John Doe</span>
-                    <span className="text-gray-400">johndoe@gmail.com</span>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
+            <div className="hidden lg:flex">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar>
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>John Doe</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-52">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col text-[12px]">
+                      <span className="font-bold">John Doe</span>
+                      <span className="text-gray-400">johndoe@gmail.com</span>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer">
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
-            <DropdownMenu>
+            {/*   <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
@@ -496,7 +534,7 @@ const Navbar: React.FC = () => {
                   <DesktopIcon /> System
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </div>
         </div>
       </header>
