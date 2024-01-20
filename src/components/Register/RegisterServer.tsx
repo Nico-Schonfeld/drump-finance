@@ -1,4 +1,6 @@
-export const RegisterServer = async (newUser: unknown) => {
+import { User } from "@prisma/client";
+
+export const RegisterServer = async (newUser: User) => {
   if (!newUser) return;
 
   const res = await fetch("/api/auth/register", {
@@ -15,5 +17,7 @@ export const RegisterServer = async (newUser: unknown) => {
   console.log(data);
  */
 
-  if (res.ok) return res;
+  if (res.ok) {
+    return res;
+  }
 };

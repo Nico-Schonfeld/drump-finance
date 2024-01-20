@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { signIn } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -39,7 +40,6 @@ import {
   ReaderIcon,
   HamburgerMenuIcon,
 } from "@radix-ui/react-icons";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -57,14 +57,42 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { RegisterServer } from "@/components/Register/RegisterServer";
+import { signOut } from "next-auth/react";
+import { User } from "@prisma/client";
 
-const Navbar: React.FC = () => {
-  const { setTheme } = useTheme();
+const Navbar = ({ user }: { user: any | null | User }) => {
   const path = usePathname();
 
   const [backToTopScroll, setBackToTopScroll] = React.useState(false);
   const [viewPassword, setViewPassword] = React.useState(false);
-  const route = useRouter();
+  const [openDrawerLogin, setOpenDrawerLogin] = React.useState(false);
+
+  const routerNext = useRouter();
+
+  const handleClickActionLogin = async (formData: FormData) => {
+    const email = formData.get("email");
+    const pass = formData.get("password");
+
+    const loginUser = {
+      email,
+      password: pass,
+    };
+
+    const res = await signIn("credentials", {
+      ...loginUser,
+      redirect: false,
+    });
+
+    if (!res?.ok) {
+      console.error(res);
+    } else {
+      /* routerNext.push("/dashboard"); */
+      location.replace("/dashboard");
+    }
+
+    if (res?.status === 401) return console.error("User not found!");
+    if (res?.status === 500) return console.error("Internal Server Error");
+  };
 
   const handleActioClient = async (FormData: FormData) => {
     const name = FormData.get("name");
@@ -79,8 +107,10 @@ const Navbar: React.FC = () => {
       password,
     };
 
-    RegisterServer(newUser).then((res) => {
-      if (res?.ok) route.push("/");
+    RegisterServer(newUser as any).then((res) => {
+      if (res?.ok) {
+        setOpenDrawerLogin(true);
+      }
     });
   };
 
@@ -229,278 +259,406 @@ const Navbar: React.FC = () => {
               </SheetContent>
             </Sheet>
 
-            <div className="hidden lg:flex items-center gap-3">
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button
-                    variant={"default"}
-                    size={"sm"}
-                    className="text-white"
-                  >
-                    Sign In
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent>
-                  <div className="mx-auto w-full max-w-sm">
-                    <DrawerHeader>
-                      <DrawerTitle className="text-3xl text-center">
-                        Sign In
-                      </DrawerTitle>
-                      <DrawerDescription className="text-center">
-                        Enter your email below to create your <br /> account
-                      </DrawerDescription>
-                    </DrawerHeader>
+            {!user ? (
+              <div className="hidden lg:flex items-center gap-3">
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button
+                      variant={"default"}
+                      size={"sm"}
+                      className="text-white"
+                    >
+                      Sign In
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <div className="mx-auto w-full max-w-sm">
+                      <DrawerHeader>
+                        <DrawerTitle className="text-3xl text-center">
+                          Sign In
+                        </DrawerTitle>
+                        <DrawerDescription className="text-center">
+                          Enter your email below to create your <br /> account
+                        </DrawerDescription>
+                      </DrawerHeader>
 
-                    <DrawerFooter>
-                      <div className="w-full flex flex-col items-center justify-center gap-5">
-                        <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
-                          Google
-                        </Button>
+                      <DrawerFooter>
+                        <div className="w-full flex flex-col items-center justify-center gap-5">
+                          <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
+                            Google
+                          </Button>
 
-                        <div className="text-gray-400 flex items-center justify-center w-full">
-                          <Separator className="w-20 mr-5" />{" "}
-                          <span className="text-sm ">Or continue with</span>{" "}
-                          <Separator className="w-20 ml-5" />
-                        </div>
-                      </div>
-
-                      <form
-                        action=""
-                        className="w-full flex flex-col gap-5 pb-20 pt-10"
-                      >
-                        <div>
-                          <Input
-                            type="email"
-                            id="email"
-                            placeholder="johndoe@example.com"
-                            name="email"
-                          />
+                          <div className="text-gray-400 flex items-center justify-center w-full">
+                            <Separator className="w-20 mr-5" />{" "}
+                            <span className="text-sm ">Or continue with</span>{" "}
+                            <Separator className="w-20 ml-5" />
+                          </div>
                         </div>
 
-                        <div className="flex items-center">
-                          <Input
-                            type={viewPassword ? "text" : "password"}
-                            id="pass"
-                            placeholder="********"
-                            name="password"
-                          />
+                        <form
+                          action={handleClickActionLogin}
+                          className="w-full flex flex-col gap-5 pb-20 pt-10"
+                        >
+                          <div>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Input
+                                    autoFocus
+                                    type="email"
+                                    id="email"
+                                    placeholder="johndoe@example.com"
+                                    name="email"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Email</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
 
-                          {viewPassword ? (
-                            <Button
-                              type="button"
-                              size={"icon"}
-                              variant={"outline"}
-                              className="ml-3 w-12"
-                              onClick={() => setViewPassword(!viewPassword)}
-                            >
-                              <EyeNoneIcon />
-                            </Button>
-                          ) : (
-                            <Button
-                              type="button"
-                              size={"icon"}
-                              variant={"outline"}
-                              className="ml-3 w-12"
-                              onClick={() => setViewPassword(!viewPassword)}
-                            >
-                              <EyeOpenIcon />
-                            </Button>
-                          )}
-                        </div>
+                          <div className="flex items-center">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Input
+                                    type={viewPassword ? "text" : "password"}
+                                    id="pass"
+                                    placeholder="********"
+                                    name="password"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Password</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
 
-                        <Button type="submit" className="text-white">
-                          Sign In with Email
-                        </Button>
+                            {viewPassword ? (
+                              <Button
+                                type="button"
+                                size={"icon"}
+                                variant={"outline"}
+                                className="ml-3 w-12"
+                                onClick={() => setViewPassword(!viewPassword)}
+                              >
+                                <EyeNoneIcon />
+                              </Button>
+                            ) : (
+                              <Button
+                                type="button"
+                                size={"icon"}
+                                variant={"outline"}
+                                className="ml-3 w-12"
+                                onClick={() => setViewPassword(!viewPassword)}
+                              >
+                                <EyeOpenIcon />
+                              </Button>
+                            )}
+                          </div>
 
-                        <DrawerClose asChild>
-                          <Button variant="outline">Cancel</Button>
-                        </DrawerClose>
-                      </form>
-                    </DrawerFooter>
-                  </div>
-                </DrawerContent>
-              </Drawer>
+                          <Button type="submit" className="text-white">
+                            Sign In with Email
+                          </Button>
 
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button
-                    variant={"ghost"}
-                    size={"sm"}
-                    className="text-black dark:text-white"
-                  >
-                    Sign up
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent>
-                  <div className="mx-auto w-full max-w-sm">
-                    <DrawerHeader>
-                      <DrawerTitle className="text-3xl text-center">
-                        Create an account
-                      </DrawerTitle>
-                      <DrawerDescription className="text-center">
-                        Enter your email below to create your <br /> account
-                      </DrawerDescription>
-                    </DrawerHeader>
-
-                    <DrawerFooter>
-                      <div className="w-full flex flex-col items-center justify-center gap-5">
-                        <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
-                          Google
-                        </Button>
-
-                        <div className="text-gray-400 flex items-center justify-center w-full">
-                          <Separator className="w-20 mr-5" />{" "}
-                          <span className="text-sm ">Or continue with</span>{" "}
-                          <Separator className="w-20 ml-5" />
-                        </div>
-                      </div>
-
-                      <form
-                        action={handleActioClient}
-                        className="w-full flex flex-col gap-5 pb-20 pt-10"
-                      >
-                        <div>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Input
-                                  type="text"
-                                  id="name"
-                                  placeholder="johndoe"
-                                  name="name"
-                                />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Name</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
-
-                        <div>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Input
-                                  type="text"
-                                  id="username"
-                                  placeholder="John Doe"
-                                  name="username"
-                                />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Username</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
-
-                        <div>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Input
-                                  type="email"
-                                  id="email"
-                                  placeholder="johndoe@example.com"
-                                  name="email"
-                                />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Email</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
-
-                        <div className="flex items-center">
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Input
-                                  type={viewPassword ? "text" : "password"}
-                                  id="pass"
-                                  placeholder="********"
-                                  name="password"
-                                />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Password</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-
-                          {viewPassword ? (
-                            <Button
-                              type="button"
-                              size={"icon"}
-                              variant={"outline"}
-                              className="ml-3 w-12"
-                              onClick={() => setViewPassword(!viewPassword)}
-                            >
-                              <EyeNoneIcon />
-                            </Button>
-                          ) : (
-                            <Button
-                              type="button"
-                              size={"icon"}
-                              variant={"outline"}
-                              className="ml-3 w-12"
-                              onClick={() => setViewPassword(!viewPassword)}
-                            >
-                              <EyeOpenIcon />
-                            </Button>
-                          )}
-                        </div>
-
-                        <Button type="submit" className="text-white">
-                          Sign In with Email
-                        </Button>
-
-                        <DrawerClose asChild>
-                          <Button variant="outline">Cancel</Button>
-                        </DrawerClose>
-
-                        <p className="text-center text-sm text-gray-400 mt-3">
-                          By clicking continue, you agree to our{" "}
-                          <span>Terms of Service</span> and{" "}
-                          <span>Privacy Policy</span>.
-                        </p>
-                      </form>
-                    </DrawerFooter>
-                  </div>
-                </DrawerContent>
-              </Drawer>
-            </div>
-
-            <div className="hidden lg:flex">
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Avatar>
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>John Doe</AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-52">
-                  <DropdownMenuLabel>
-                    <div className="flex flex-col text-[12px]">
-                      <span className="font-bold">John Doe</span>
-                      <span className="text-gray-400">johndoe@gmail.com</span>
+                          <DrawerClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                          </DrawerClose>
+                        </form>
+                      </DrawerFooter>
                     </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer">
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                  </DrawerContent>
+                </Drawer>
+
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button
+                      variant={"ghost"}
+                      size={"sm"}
+                      className="text-black dark:text-white"
+                    >
+                      Sign up
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <div className="mx-auto w-full max-w-sm">
+                      <DrawerHeader>
+                        <DrawerTitle className="text-3xl text-center">
+                          Create an account
+                        </DrawerTitle>
+                        <DrawerDescription className="text-center">
+                          Enter your email below to create your <br /> account
+                        </DrawerDescription>
+                      </DrawerHeader>
+
+                      <DrawerFooter>
+                        <div className="w-full flex flex-col items-center justify-center gap-5">
+                          <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
+                            Google
+                          </Button>
+
+                          <div className="text-gray-400 flex items-center justify-center w-full">
+                            <Separator className="w-20 mr-5" />{" "}
+                            <span className="text-sm ">Or continue with</span>{" "}
+                            <Separator className="w-20 ml-5" />
+                          </div>
+                        </div>
+
+                        <form
+                          action={handleActioClient}
+                          className="w-full flex flex-col gap-5 pb-20 pt-10"
+                        >
+                          <div>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Input
+                                    autoFocus
+                                    type="text"
+                                    id="name"
+                                    placeholder="johndoe"
+                                    name="name"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Name</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+
+                          <div>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Input
+                                    type="text"
+                                    id="username"
+                                    placeholder="John Doe"
+                                    name="username"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Username</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+
+                          <div>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Input
+                                    type="email"
+                                    id="email"
+                                    placeholder="johndoe@example.com"
+                                    name="email"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Email</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+
+                          <div className="flex items-center">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Input
+                                    type={viewPassword ? "text" : "password"}
+                                    id="pass"
+                                    placeholder="********"
+                                    name="password"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Password</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+
+                            {viewPassword ? (
+                              <Button
+                                type="button"
+                                size={"icon"}
+                                variant={"outline"}
+                                className="ml-3 w-12"
+                                onClick={() => setViewPassword(!viewPassword)}
+                              >
+                                <EyeNoneIcon />
+                              </Button>
+                            ) : (
+                              <Button
+                                type="button"
+                                size={"icon"}
+                                variant={"outline"}
+                                className="ml-3 w-12"
+                                onClick={() => setViewPassword(!viewPassword)}
+                              >
+                                <EyeOpenIcon />
+                              </Button>
+                            )}
+                          </div>
+
+                          <Button type="submit" className="text-white">
+                            Sign In with Email
+                          </Button>
+
+                          <DrawerClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                          </DrawerClose>
+
+                          <p className="text-center text-sm text-gray-400 mt-3">
+                            By clicking continue, you agree to our{" "}
+                            <span>Terms of Service</span> and{" "}
+                            <span>Privacy Policy</span>.
+                          </p>
+                        </form>
+                      </DrawerFooter>
+                    </div>
+                  </DrawerContent>
+                </Drawer>
+
+                {openDrawerLogin && (
+                  <Drawer open={true}>
+                    <DrawerContent>
+                      <div className="mx-auto w-full max-w-sm">
+                        <DrawerHeader>
+                          <DrawerTitle className="text-3xl text-center">
+                            Sign In (Tu cuenta se creo con exito)
+                          </DrawerTitle>
+                          <DrawerDescription className="text-center">
+                            Enter your email below to create your <br /> account
+                          </DrawerDescription>
+                        </DrawerHeader>
+
+                        <DrawerFooter>
+                          <div className="w-full flex flex-col items-center justify-center gap-5">
+                            <Button className="bg-white hover:bg-gray-100 border text-black transition-all w-full">
+                              Google
+                            </Button>
+
+                            <div className="text-gray-400 flex items-center justify-center w-full">
+                              <Separator className="w-20 mr-5" />{" "}
+                              <span className="text-sm ">Or continue with</span>{" "}
+                              <Separator className="w-20 ml-5" />
+                            </div>
+                          </div>
+
+                          <form
+                            action={handleClickActionLogin}
+                            className="w-full flex flex-col gap-5 pb-20 pt-10"
+                          >
+                            <div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Input
+                                      autoFocus
+                                      type="email"
+                                      id="email"
+                                      placeholder="johndoe@example.com"
+                                      name="email"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Email</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+
+                            <div className="flex items-center">
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Input
+                                      type={viewPassword ? "text" : "password"}
+                                      id="pass"
+                                      placeholder="********"
+                                      name="password"
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Password</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+
+                              {viewPassword ? (
+                                <Button
+                                  type="button"
+                                  size={"icon"}
+                                  variant={"outline"}
+                                  className="ml-3 w-12"
+                                  onClick={() => setViewPassword(!viewPassword)}
+                                >
+                                  <EyeNoneIcon />
+                                </Button>
+                              ) : (
+                                <Button
+                                  type="button"
+                                  size={"icon"}
+                                  variant={"outline"}
+                                  className="ml-3 w-12"
+                                  onClick={() => setViewPassword(!viewPassword)}
+                                >
+                                  <EyeOpenIcon />
+                                </Button>
+                              )}
+                            </div>
+
+                            <Button type="submit" className="text-white">
+                              Sign In with Email
+                            </Button>
+
+                            <DrawerClose asChild>
+                              <Button variant="outline">Cancel</Button>
+                            </DrawerClose>
+                          </form>
+                        </DrawerFooter>
+                      </div>
+                    </DrawerContent>
+                  </Drawer>
+                )}
+              </div>
+            ) : (
+              <div className="hidden lg:flex pr-10">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Avatar>
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt="@shadcn"
+                      />
+                      <AvatarFallback>{user?.name}</AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-52">
+                    <DropdownMenuLabel>
+                      <div className="flex flex-col text-[12px]">
+                        <span className="font-bold">{user?.username}</span>
+                        <span className="text-gray-400">{user?.email}</span>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer">
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => signOut()}
+                    >
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
 
             {/*   <DropdownMenu>
               <DropdownMenuTrigger asChild>
