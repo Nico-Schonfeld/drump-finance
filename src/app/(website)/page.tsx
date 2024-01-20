@@ -47,7 +47,7 @@ const HomeLanding = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
-          className="bg-gray-50 dark:bg-[#121010] w-full h-[50rem] border-2 shadow-xl rounded-md flex items-center justify-center flex-col gap-3"
+          className="bg-gray-50 dark:bg-[#1c1917] w-full h-[50rem] border-2 shadow-xl rounded-md flex items-center justify-center flex-col gap-3"
         >
           <Button className="w-60" variant={"outline"} size={"lg"}>
             Live Demo
@@ -64,12 +64,12 @@ const HomeLanding = () => {
           className="h-auto flex items-center justify-center flex-col py-32"
         >
           <div className="w-full h-auto flex items-center justify-center p-5 gap-5">
-            <div className="w-[40%] h-52 bg-gray-50 dark:bg-[#121010] border rounded-md  flex flex-col items-center justify-center">
+            <div className="w-[40%] h-52 bg-gray-50 dark:bg-[#1c1917] border rounded-md  flex flex-col items-center justify-center">
               <h3 className="font-bold text-2xl text-center">
                 Drump <span className="text-green-500">Finance</span>
               </h3>
             </div>
-            <div className="w-full h-52 p-10 bg-gray-50 dark:bg-[#121010] border rounded-md  flex flex-col items-center justify-center">
+            <div className="w-full h-52 p-10 bg-gray-50 dark:bg-[#1c1917] border rounded-md  flex flex-col items-center justify-center">
               <p className="text-pretty">
                 Es una herramienta que está construida para ser simple, flexible
                 y para todos. Hacer un seguimiento de todos sus gastos diarios
@@ -81,10 +81,10 @@ const HomeLanding = () => {
           </div>
 
           <div className="w-full h-auto flex items-center justify-center p-5 gap-5">
-            <div className="w-[40%] h-52 bg-gray-50 dark:bg-[#121010] border rounded-md  flex flex-col items-center justify-center">
+            <div className="w-[40%] h-52 bg-gray-50 dark:bg-[#1c1917] border rounded-md  flex flex-col items-center justify-center">
               <h3 className="text-3xl font-bold text-green-500">50-30-20</h3>
             </div>
-            <div className="w-full h-52 p-10 bg-gray-50 dark:bg-[#121010] border rounded-md  flex flex-col items-center justify-center">
+            <div className="w-full h-52 p-10 bg-gray-50 dark:bg-[#1c1917] border rounded-md  flex flex-col items-center justify-center">
               <p className="text-pretty">
                 Podrás manejar tus finanzas de forma sencilla y organizada,
                 dividiendo tus ingresos de acuerdo a tres categorias clave:
