@@ -193,7 +193,7 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-5">
-            {/* <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
               <Drawer>
                 <DrawerTrigger asChild>
                   <Button
@@ -435,9 +435,9 @@ const Navbar: React.FC = () => {
                   </div>
                 </DrawerContent>
               </Drawer>
-            </div> */}
+            </div>
 
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
                   <AvatarImage
@@ -462,7 +462,7 @@ const Navbar: React.FC = () => {
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
