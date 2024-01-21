@@ -19,7 +19,7 @@ model User {
   password     String
   rol          String?        @default("USER")
   avatar       String?
-  premium      String?        @default("FREE")
+  account      String?        @default("FREE")
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   logs         Logs[]
