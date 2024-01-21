@@ -62,6 +62,7 @@ import { User } from "@prisma/client";
 
 const Navbar = ({ user }: { user: any | null | User }) => {
   const path = usePathname();
+  const { setTheme } = useTheme();
 
   const [backToTopScroll, setBackToTopScroll] = React.useState(false);
   const [viewPassword, setViewPassword] = React.useState(false);
@@ -139,7 +140,8 @@ const Navbar = ({ user }: { user: any | null | User }) => {
     if (
       path === "/auth/login" ||
       path === "/auth/register" ||
-      path === "/dashboard"
+      path === "/dashboard" ||
+      path === "/dashboard/logs"
     )
       return null;
 
@@ -632,8 +634,9 @@ const Navbar = ({ user }: { user: any | null | User }) => {
                   <DropdownMenuTrigger>
                     <Avatar>
                       <AvatarImage
-                        src="https://github.com/shadcn.png"
-                        alt="@shadcn"
+                        /* src="https://github.com/shadcn.png" */
+                        src={user?.avatar}
+                        alt={user?.name}
                       />
                       <AvatarFallback>{user?.name}</AvatarFallback>
                     </Avatar>
@@ -660,7 +663,7 @@ const Navbar = ({ user }: { user: any | null | User }) => {
               </div>
             )}
 
-            {/*   <DropdownMenu>
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
@@ -692,7 +695,7 @@ const Navbar = ({ user }: { user: any | null | User }) => {
                   <DesktopIcon /> System
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu> */}
+            </DropdownMenu>
           </div>
         </div>
       </header>

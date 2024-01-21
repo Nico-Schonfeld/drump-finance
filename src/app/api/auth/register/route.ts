@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         username: body.username,
         email: body.email,
         password: passHash,
-        avatar: "1",
+        avatar: "/assets/images/photoAccount/avatar1.svg",
       },
     });
 
