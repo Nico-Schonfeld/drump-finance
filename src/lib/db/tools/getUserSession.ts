@@ -23,6 +23,7 @@ export const getUserSession = async () => {
   }
 
   const returnUser = {
+    id: userLogin?.id,
     name: userLogin?.name,
     username: userLogin?.username,
     email: userLogin?.email,
@@ -38,6 +39,7 @@ export const getRolUserSession = async ({
   user,
 }: {
   user: {
+    id: string;
     name: string;
     username: string;
     email: string;
@@ -54,4 +56,28 @@ export const getRolUserSession = async ({
   if (user?.rol === "ADMIN") {
     return { status: 200, ok: true, message: "Puedes ingresar", user: user };
   }
+};
+
+export const getPremiumSession = async ({
+  user,
+}: {
+  user: {
+    id: string;
+    name: string;
+    username: string;
+    email: string;
+    rol: string;
+    avatar: string;
+    premium: string;
+  };
+}) => {
+  if (user?.premium === "FREE") {
+    console.error(
+      "No tenes permisos para acceder a esta ruta, tenes una cuenta FREE"
+    );
+    return null;
+  }
+
+  if (user?.premium === "PRO")
+    return { status: 200, ok: true, message: "Puedes ingresar", user: user };
 };

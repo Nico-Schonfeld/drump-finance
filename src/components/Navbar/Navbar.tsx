@@ -141,7 +141,8 @@ const Navbar = ({ user }: { user: any | null | User }) => {
       path === "/auth/login" ||
       path === "/auth/register" ||
       path === "/dashboard" ||
-      path === "/dashboard/logs"
+      path === "/dashboard/logs" ||
+      path === "/dashboard/users"
     )
       return null;
 

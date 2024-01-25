@@ -25,9 +25,21 @@ import {
   DashboardIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { usePathname } from "next/navigation";
 
-const DashboardComponent = ({ user }: { user: any }) => {
+const UsersComponent = ({ user, users }: { user: any; users: any }) => {
   const path = usePathname();
 
   const listLinks = [
@@ -139,7 +151,37 @@ const DashboardComponent = ({ user }: { user: any }) => {
           </ResizablePanel>
           <ResizableHandle className="bg-[#a1a1aa20]" withHandle />
           <ResizablePanel defaultSize={87} className="p-5">
-            Two
+            <Table>
+              <TableCaption>A list of your recent invoices.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Invoice</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Method</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users.map((user: any) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">
+                      {user.username}
+                    </TableCell>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell className="text-right">
+                      {user.username}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={3}>Total</TableCell>
+                  <TableCell className="text-right">$2,500.00</TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
@@ -147,4 +189,4 @@ const DashboardComponent = ({ user }: { user: any }) => {
   );
 };
 
-export default DashboardComponent;
+export default UsersComponent;

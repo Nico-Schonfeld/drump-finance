@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     if (emailExist)
       return NextResponse.json(
-        { message: "Email exist" },
+        { message: "Email exist", error: true, success: false },
         { status: 400, statusText: "Error" }
       );
 
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     if (nameExist)
       return NextResponse.json(
-        { message: "Name exist" },
+        { message: "Name exist", error: true, success: false },
         { status: 400, statusText: "Error" }
       );
 
@@ -44,7 +44,10 @@ export async function POST(req: NextRequest) {
 
     const { password: _, ...user } = res;
 
-    return NextResponse.json({ user }, { status: 200, statusText: "ok" });
+    return NextResponse.json(
+      { user, error: false, success: true },
+      { status: 200, statusText: "ok" }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: error },
